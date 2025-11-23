@@ -1,4 +1,5 @@
 import io.github.andreabrighi.gradle.gitsemver.conventionalcommit.ConventionalCommit
+import io.gitlab.arturbosch.detekt.Detekt
 
 plugins {
     alias(libs.plugins.gitSemVer)
@@ -38,6 +39,11 @@ dokka {
     dokkaPublications.html {
         outputDirectory.set(layout.buildDirectory.dir("$rootDir/doc"))
     }
+}
+
+tasks.withType<Detekt>().configureEach {
+    config.setFrom(files("$rootDir/detekt.yml"))
+    buildUponDefaultConfig = true
 }
 
 tasks.named<Test>("test") {
