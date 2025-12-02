@@ -21,7 +21,7 @@ jobs:
           app-id: ${{ vars.BOT_ID }}
           private-key: ${{ secrets.BOT_KEY }}
 
-      - uses: danysk/action-checkout@0.2.26
+      - uses: danysk/action-checkout@0.2.27
         with:
           token: ${{ steps.bot_token.outputs.token }}
 
