@@ -2,7 +2,7 @@
 kotest = "6.0.7"
 kotlin = "2.3.0"
 ktor = "3.3.3"
-kotlinxSerialization = "1.9.0"
+kotlinxSerialization = "1.9.25"
 coroutines = "1.10.2"
 logback = "1.5.23"
 kmongo = "5.5.1"
