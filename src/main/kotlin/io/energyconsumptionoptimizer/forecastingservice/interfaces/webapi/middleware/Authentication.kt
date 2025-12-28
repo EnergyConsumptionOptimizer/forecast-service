@@ -37,7 +37,7 @@ data class UserPrincipal(
 
 fun Route.authenticated(block: Route.() -> Unit) = authenticate("user-auth", build = block)
 
-fun Route.authenticatedAdmin(block: Route.() -> Unit) = authenticate("admin-auth", build = block)
+// fun Route.authenticatedAdmin(block: Route.() -> Unit) = authenticate("admin-auth", build = block)
 
 private fun AuthenticationConfig.upstream(
     name: String,
