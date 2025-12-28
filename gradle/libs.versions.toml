@@ -6,7 +6,9 @@ kotlinxSerialization = "1.9.0"
 coroutines = "1.10.2"
 logback = "1.5.23"
 kmongo = "5.5.1"
+smile = "4.4.0"
 dotenvKotlin= "6.5.1"
+kotlinxDatetime = "0.7.1"
 
 
 [libraries]
@@ -18,12 +20,19 @@ ktor-server-netty-jvm = { module = "io.ktor:ktor-server-netty-jvm", version.ref 
 ktor-server-content-negotiation-jvm = { module = "io.ktor:ktor-server-content-negotiation-jvm", version.ref = "ktor" }
 ktor-server-status-pages = { module = "io.ktor:ktor-server-status-pages-jvm", version.ref = "ktor" }
 ktor-server-request-validation = { module = "io.ktor:ktor-server-request-validation", version.ref = "ktor" }
+ktor-server-test-host = { module = "io.ktor:ktor-server-test-host", version.ref = "ktor" }
 
 ktor-client-core = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor" }
 ktor-client-cio = { group = "io.ktor", name = "ktor-client-cio", version.ref = "ktor" }
 ktor-client-content-negotiation = { group = "io.ktor", name = "ktor-client-content-negotiation", version.ref = "ktor" }
 
 ktor-serialization-kotlinx-json-jvm = { module = "io.ktor:ktor-serialization-kotlinx-json-jvm", version.ref = "ktor" }
+
+ktor-server-cors = { module = "io.ktor:ktor-server-cors", version.ref = "ktor" }
+ktor-server-resources = { module = "io.ktor:ktor-server-resources", version.ref = "ktor" }
+ktor-server-auth = { module = "io.ktor:ktor-server-auth", version.ref = "ktor" }
+
+smile-core = { group = "com.github.haifengl", name = "smile-core", version.ref = "smile" }
 
 logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
 
@@ -32,6 +41,7 @@ kmongo-coroutine-serialization = { module = "org.litote.kmongo:kmongo-coroutine-
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
 dotenv-kotlin = { group = "io.github.cdimascio", name = "dotenv-kotlin", version.ref = "dotenvKotlin" }
+kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
 [bundles]
 kotlin-testing = [ "kotest-junit5-jvm", "kotest-assertions-core-jvm" ]
 ktor = [
@@ -40,6 +50,9 @@ ktor = [
     "ktor-server-content-negotiation-jvm",
     "ktor-server-status-pages",
     "ktor-server-request-validation",
+    "ktor-server-cors",
+    "ktor-server-resources",
+    "ktor-server-auth",
     "ktor-client-core",
     "ktor-client-cio",
     "ktor-client-content-negotiation",
