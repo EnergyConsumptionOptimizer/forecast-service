@@ -3,9 +3,10 @@ package io.energyconsumptionoptimizer.forecastingservice.domain
 import io.energyconsumptionoptimizer.forecastingservice.domain.value.ForecastId
 import io.energyconsumptionoptimizer.forecastingservice.domain.value.ForecastedDataPoint
 import io.energyconsumptionoptimizer.forecastingservice.domain.value.UtilityType
-import java.time.Instant
-import java.time.LocalDate
-import java.time.temporal.ChronoUnit
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.daysUntil
+import kotlin.time.Clock
+import kotlin.time.Instant
 
 class ForecastedConsumption private constructor(
     val id: ForecastId,
@@ -21,13 +22,13 @@ class ForecastedConsumption private constructor(
 
     val startDate: LocalDate get() = forecastedDataPoints.first().date
     val endDate: LocalDate get() = forecastedDataPoints.last().date
-    val durationDays: Long get() = ChronoUnit.DAYS.between(startDate, endDate) + 1
+    val durationDays: Long get() = (startDate.daysUntil(endDate) + 1).toLong()
 
     fun forecastsInRange(
         start: LocalDate,
         end: LocalDate,
     ): List<ForecastedDataPoint> {
-        require(!end.isBefore(start)) { "End date cannot be before start date" }
+        require(start <= end) { "End date cannot be before start date" }
         return forecastedDataPoints.filter { it.date in start..end }
     }
 
@@ -43,7 +44,7 @@ class ForecastedConsumption private constructor(
         fun create(
             utilityType: UtilityType,
             forecastedDataPoints: List<ForecastedDataPoint>,
-            computedAt: Instant = Instant.now(),
+            computedAt: Instant = Clock.System.now(),
         ): ForecastedConsumption =
             ForecastedConsumption(
                 id = ForecastId.generate(),

@@ -2,7 +2,7 @@ package io.energyconsumptionoptimizer.forecastingservice.domain.port
 
 import io.energyconsumptionoptimizer.forecastingservice.domain.value.ConsumptionValue
 import io.energyconsumptionoptimizer.forecastingservice.domain.value.UtilityType
-import java.time.LocalDate
+import kotlinx.datetime.LocalDate
 
 data class HistoricalData(
     val timestamp: LocalDate,
