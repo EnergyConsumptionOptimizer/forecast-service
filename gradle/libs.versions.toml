@@ -2,14 +2,13 @@
 kotest = "6.0.7"
 kotlin = "2.3.0"
 ktor = "3.3.3"
-kotlinxSerialization = "2.3.0"
+kotlinxSerializationJson = "1.10.0-RC"
 coroutines = "1.10.2"
 logback = "1.5.23"
 kmongo = "5.5.1"
 smile = "4.4.2"
 dotenvKotlin= "6.5.1"
 kotlinxDatetime = "0.7.1-0.6.x-compat"
-
 
 [libraries]
 kotest-junit5-jvm = { module = "io.kotest:kotest-runner-junit5-jvm", version.ref = "kotest" }
@@ -40,10 +39,11 @@ logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "lo
 
 kmongo-coroutine-serialization = { module = "org.litote.kmongo:kmongo-coroutine-serialization", version.ref = "kmongo" }
 
-kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
 dotenv-kotlin = { group = "io.github.cdimascio", name = "dotenv-kotlin", version.ref = "dotenvKotlin" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
+
 [bundles]
 kotlin-testing = [ "kotest-junit5-jvm", "kotest-assertions-core-jvm" ]
 ktor = [
@@ -60,9 +60,10 @@ ktor = [
     "ktor-client-content-negotiation",
     "ktor-serialization-kotlinx-json-jvm"
 ]
+
 [plugins]
 dokka = "org.jetbrains.dokka:2.1.0"
 gitSemVer = "org.danilopianini.git-sensitive-semantic-versioning:7.0.8"
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-qa = "org.danilopianini.gradle-kotlin-qa:0.99.0"
-kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlinxSerialization" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }

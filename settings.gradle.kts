@@ -11,4 +11,4 @@ gitHooks {
     createHooks(true)
 }
 
-rootProject.name = "Template-for-Kotlin-projects"
+rootProject.name = "forecast-service"
