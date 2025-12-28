@@ -21,6 +21,8 @@ ktor-server-content-negotiation-jvm = { module = "io.ktor:ktor-server-content-ne
 ktor-server-status-pages = { module = "io.ktor:ktor-server-status-pages-jvm", version.ref = "ktor" }
 ktor-server-request-validation = { module = "io.ktor:ktor-server-request-validation", version.ref = "ktor" }
 ktor-server-test-host = { module = "io.ktor:ktor-server-test-host", version.ref = "ktor" }
+ktor-client-mock = { module = "io.ktor:ktor-client-mock", version.ref = "ktor" }
+ktor-client-resources = { module = "io.ktor:ktor-client-resources", version.ref = "ktor" }
 
 ktor-client-core = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor" }
 ktor-client-cio = { group = "io.ktor", name = "ktor-client-cio", version.ref = "ktor" }

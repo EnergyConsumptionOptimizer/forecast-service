@@ -23,6 +23,8 @@ buildscript {
 dependencies {
     testImplementation(libs.bundles.kotlin.testing)
     testImplementation(libs.ktor.server.test.host)
+    testImplementation(libs.ktor.client.resources)
+    testImplementation(libs.ktor.client.mock)
     implementation(libs.bundles.ktor)
     implementation(libs.logback.classic)
     implementation(libs.kotlinx.coroutines.core)
