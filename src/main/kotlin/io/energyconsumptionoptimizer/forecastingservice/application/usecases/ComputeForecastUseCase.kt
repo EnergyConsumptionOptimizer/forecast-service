@@ -11,6 +11,8 @@ import io.energyconsumptionoptimizer.forecastingservice.domain.value.UtilityType
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
+import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.plus
 
 class ComputeForecastUseCase(
     private val repository: ForecastRepository,
@@ -49,9 +51,9 @@ class ComputeForecastUseCase(
         } else {
             val startDate = dataPoints.first().date
             PeriodType.entries.associateWith { period ->
-                val endDate = startDate.plusDays(period.days.toLong() - 1)
+                val endDate = startDate.plus(period.days - 1, DateTimeUnit.DAY)
                 dataPoints
-                    .takeWhile { !it.date.isAfter(endDate) }
+                    .takeWhile { it.date <= endDate }
                     .sumOf { it.predictedValue.amount }
             }
         }
