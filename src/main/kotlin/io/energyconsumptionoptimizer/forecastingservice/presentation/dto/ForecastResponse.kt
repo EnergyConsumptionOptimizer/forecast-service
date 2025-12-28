@@ -2,29 +2,23 @@ package io.energyconsumptionoptimizer.forecastingservice.presentation.dto
 
 import io.energyconsumptionoptimizer.forecastingservice.domain.ForecastedConsumption
 import io.energyconsumptionoptimizer.forecastingservice.domain.value.ForecastedDataPoint
-import io.energyconsumptionoptimizer.forecastingservice.presentation.serializers.InstantSerializer
-import io.energyconsumptionoptimizer.forecastingservice.presentation.serializers.LocalDateSerializer
+import kotlinx.datetime.LocalDate
 import kotlinx.serialization.Serializable
-import java.time.Instant
-import java.time.LocalDate
+import kotlin.time.Instant
 
 @Serializable
 data class ForecastResponse(
     val id: String,
     val utilityType: UtilityTypeDto,
     val dataPoints: List<DataPointResponse>,
-    @Serializable(with = InstantSerializer::class)
     val computedAt: Instant,
-    @Serializable(with = LocalDateSerializer::class)
     val startDate: LocalDate,
-    @Serializable(with = LocalDateSerializer::class)
     val endDate: LocalDate,
     val durationDays: Long,
 )
 
 @Serializable
 data class DataPointResponse(
-    @Serializable(with = LocalDateSerializer::class)
     val date: LocalDate,
     val predictedConsumption: Double,
 )
