@@ -1,7 +1,7 @@
 package io.energyconsumptionoptimizer.forecastingservice.storage.mongodb.document
 
-import java.time.Instant
-import java.time.LocalDate
+import kotlinx.datetime.LocalDate
+import kotlin.time.Instant
 
 data class ForecastedConsumptionDocument(
     @Suppress("ConstructorParameterNaming")
