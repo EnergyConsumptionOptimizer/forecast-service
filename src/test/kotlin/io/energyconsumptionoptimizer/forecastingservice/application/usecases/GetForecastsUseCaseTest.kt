@@ -8,18 +8,30 @@ import io.energyconsumptionoptimizer.forecastingservice.utils.fakes.FakeForecast
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.shouldBe
-import java.time.LocalDate
+import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.plus
+import kotlinx.datetime.toLocalDateTime
+import kotlin.time.Clock
 
 class GetForecastsUseCaseTest :
     BehaviorSpec({
         val repository = FakeForecastRepository()
         val useCase = GetForecastsUseCase(repository)
 
-        fun createForecast(utilityType: UtilityType) =
-            ForecastedConsumption.create(
+        fun createForecast(utilityType: UtilityType): ForecastedConsumption {
+            val tomorrow =
+                Clock.System
+                    .now()
+                    .toLocalDateTime(TimeZone.UTC)
+                    .date
+                    .plus(1, DateTimeUnit.DAY)
+
+            return ForecastedConsumption.create(
                 utilityType,
-                listOf(ForecastedDataPoint(LocalDate.now().plusDays(1), ConsumptionValue.of(100.0))),
+                listOf(ForecastedDataPoint(tomorrow, ConsumptionValue.of(100.0))),
             )
+        }
 
         afterContainer {
             repository.clear()

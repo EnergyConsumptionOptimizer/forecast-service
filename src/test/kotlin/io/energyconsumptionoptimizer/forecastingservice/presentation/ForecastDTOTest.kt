@@ -7,23 +7,26 @@ import io.energyconsumptionoptimizer.forecastingservice.domain.value.UtilityType
 import io.energyconsumptionoptimizer.forecastingservice.presentation.dto.UtilityTypeDto
 import io.energyconsumptionoptimizer.forecastingservice.presentation.dto.toDTO
 import io.energyconsumptionoptimizer.forecastingservice.presentation.dto.toListDTO
-import io.energyconsumptionoptimizer.forecastingservice.presentation.serializers.InstantSerializer
-import io.energyconsumptionoptimizer.forecastingservice.presentation.serializers.LocalDateSerializer
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
-import kotlinx.serialization.Serializable
+import io.kotest.matchers.string.shouldContain
+import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.plus
+import kotlinx.datetime.toLocalDateTime
 import kotlinx.serialization.json.Json
-import java.time.Instant
-import java.time.LocalDate
+import kotlin.time.Clock
 
 class ForecastDTOTest :
     BehaviorSpec({
 
         val json = Json { ignoreUnknownKeys = true }
 
+        val currentInstant = Clock.System.now()
+        val today = currentInstant.toLocalDateTime(TimeZone.UTC).date
+        val tomorrow = today.plus(1, DateTimeUnit.DAY)
+
         Given("a domain forecast object") {
-            val today = LocalDate.now()
-            val currentInstant = Instant.now()
 
             val domainForecast =
                 ForecastedConsumption.create(
@@ -31,7 +34,7 @@ class ForecastDTOTest :
                     forecastedDataPoints =
                         listOf(
                             ForecastedDataPoint(today, ConsumptionValue.of(10.0)),
-                            ForecastedDataPoint(today.plusDays(1), ConsumptionValue.of(20.0)),
+                            ForecastedDataPoint(tomorrow, ConsumptionValue.of(20.0)),
                         ),
                     computedAt = currentInstant,
                 )
@@ -44,7 +47,7 @@ class ForecastDTOTest :
                     dto.utilityType shouldBe UtilityTypeDto.ELECTRICITY
                     dto.computedAt shouldBe currentInstant
                     dto.startDate shouldBe today
-                    dto.endDate shouldBe today.plusDays(1)
+                    dto.endDate shouldBe tomorrow
                     dto.durationDays shouldBe 2
                 }
 
@@ -53,11 +56,18 @@ class ForecastDTOTest :
                     dto.dataPoints[0].predictedConsumption shouldBe 10.0
                     dto.dataPoints[0].date shouldBe today
                 }
+
+                Then("it should serialize to JSON correctly using kotlinx native support") {
+                    val jsonString = json.encodeToString(dto)
+
+                    jsonString shouldContain today.toString()
+                    jsonString shouldContain currentInstant.toString()
+                    jsonString shouldContain "ELECTRICITY"
+                }
             }
         }
 
         Given("a list of domain forecasts") {
-            val today = LocalDate.now()
             val list =
                 listOf(
                     ForecastedConsumption.create(
@@ -77,60 +87,6 @@ class ForecastDTOTest :
                     listDto.count shouldBe 2
                     listDto.forecasts[0].utilityType shouldBe UtilityTypeDto.GAS
                     listDto.forecasts[1].utilityType shouldBe UtilityTypeDto.WATER
-                }
-            }
-        }
-
-        Given("the InstantSerializer") {
-            @Serializable
-            data class InstantWrapper(
-                @Serializable(with = InstantSerializer::class) val time: Instant,
-            )
-
-            val now = Instant.now()
-            val wrapper = InstantWrapper(now)
-
-            When("serializing to JSON") {
-                val jsonString = json.encodeToString(InstantWrapper.serializer(), wrapper)
-
-                Then("it should produce a standard ISO-8601 string") {
-                    jsonString shouldBe """{"time":"$now"}"""
-                }
-            }
-
-            When("deserializing from JSON") {
-                val jsonString = """{"time":"$now"}"""
-                val result = json.decodeFromString(InstantWrapper.serializer(), jsonString)
-
-                Then("it should return the correct Instant object") {
-                    result.time shouldBe now
-                }
-            }
-        }
-
-        Given("the LocalDateSerializer") {
-            @Serializable
-            data class DateWrapper(
-                @Serializable(with = LocalDateSerializer::class) val date: LocalDate,
-            )
-
-            val today = LocalDate.now()
-            val wrapper = DateWrapper(today)
-
-            When("serializing to JSON") {
-                val jsonString = json.encodeToString(DateWrapper.serializer(), wrapper)
-
-                Then("it should produce a simple date string") {
-                    jsonString shouldBe """{"date":"$today"}"""
-                }
-            }
-
-            When("deserializing from JSON") {
-                val jsonString = """{"date":"$today"}"""
-                val result = json.decodeFromString(DateWrapper.serializer(), jsonString)
-
-                Then("it should return the correct LocalDate object") {
-                    result.date shouldBe today
                 }
             }
         }

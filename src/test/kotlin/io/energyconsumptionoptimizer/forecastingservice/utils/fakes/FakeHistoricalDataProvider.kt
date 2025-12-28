@@ -4,15 +4,24 @@ import io.energyconsumptionoptimizer.forecastingservice.domain.port.HistoricalDa
 import io.energyconsumptionoptimizer.forecastingservice.domain.port.HistoricalDataProvider
 import io.energyconsumptionoptimizer.forecastingservice.domain.value.ConsumptionValue
 import io.energyconsumptionoptimizer.forecastingservice.domain.value.UtilityType
-import java.time.LocalDate
+import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.minus
+import kotlinx.datetime.toLocalDateTime
+import kotlin.time.Clock
 
 class FakeHistoricalDataProvider : HistoricalDataProvider {
     override suspend fun fetchAggregatedHistoricalData(utilityType: UtilityType): List<HistoricalData> {
-        val today = LocalDate.now()
-        return (1..70).map {
+        val today =
+            Clock.System
+                .now()
+                .toLocalDateTime(TimeZone.UTC)
+                .date
+
+        return (1..70).map { daysAgo ->
             HistoricalData(
-                timestamp = today.minusDays(it.toLong()),
-                value = ConsumptionValue.of(100.0 + it),
+                timestamp = today.minus(daysAgo, DateTimeUnit.DAY),
+                value = ConsumptionValue.of(100.0 + daysAgo),
             )
         }
     }

@@ -4,7 +4,11 @@ import io.energyconsumptionoptimizer.forecastingservice.domain.port.ForecastingA
 import io.energyconsumptionoptimizer.forecastingservice.domain.port.HistoricalData
 import io.energyconsumptionoptimizer.forecastingservice.domain.value.ConsumptionValue
 import io.energyconsumptionoptimizer.forecastingservice.domain.value.ForecastedDataPoint
-import java.time.LocalDate
+import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.plus
+import kotlinx.datetime.toLocalDateTime
+import kotlin.time.Clock
 
 class FakeForecastingAlgorithm : ForecastingAlgorithm {
     override val name: String = "FakeAlgorithm"
@@ -13,10 +17,16 @@ class FakeForecastingAlgorithm : ForecastingAlgorithm {
         historicalData: List<HistoricalData>,
         horizon: Int,
     ): List<ForecastedDataPoint> {
-        val baseDate = LocalDate.now().plusDays(1)
+        val baseDate =
+            Clock.System
+                .now()
+                .toLocalDateTime(TimeZone.UTC)
+                .date
+                .plus(1, DateTimeUnit.DAY)
+
         return (0 until horizon).map { dayOffset ->
             ForecastedDataPoint(
-                date = baseDate.plusDays(dayOffset.toLong()),
+                date = baseDate.plus(dayOffset, DateTimeUnit.DAY),
                 predictedValue = ConsumptionValue.of(100.0 + dayOffset),
             )
         }
