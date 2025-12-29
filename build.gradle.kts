@@ -7,11 +7,16 @@ plugins {
     alias(libs.plugins.dokka)
     alias(libs.plugins.kotlin.qa)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.shadow)
     application
 }
 
 repositories {
     mavenCentral()
+}
+
+application {
+    mainClass.set("io.energyconsumptionoptimizer.forecastingservice.ServerKt")
 }
 
 buildscript {
