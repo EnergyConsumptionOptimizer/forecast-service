@@ -6,7 +6,7 @@ import io.ktor.server.netty.Netty
 import io.ktor.server.netty.NettyApplicationEngine
 import kotlin.system.exitProcess
 
-private const val DEFAULT_PORT = 8080
+private const val DEFAULT_PORT = 3003
 private const val SHUTDOWN_GRACE_PERIOD_MS = 1000L
 private const val SHUTDOWN_TIMEOUT_MS = 2000L
 
@@ -16,13 +16,9 @@ fun main() {
         val dependencies = Dependencies(config)
 
         initializeDatabase(dependencies)
-
         startScheduler(dependencies)
 
-        val server =
-
-            createServer(dependencies)
-
+        val server = createServer(dependencies)
         registerShutdownHook(dependencies, server)
         startServer(server)
     } catch (_: Exception) {
@@ -30,16 +26,22 @@ fun main() {
     }
 }
 
-private fun loadConfiguration() =
-    AppConfig(
-        mongoUri = System.getenv("MONGO_URI") ?: "mongodb://localhost:27017",
-        mongoDatabase = System.getenv("MONGO_DATABASE") ?: "forecasting",
+private fun loadConfiguration(): AppConfig {
+    val mongoHost = System.getenv("MONGODB_HOST") ?: "localhost"
+    val mongoPort = System.getenv("MONGODB_PORT") ?: "27017"
+    val mongoDbName = System.getenv("MONGO_DB") ?: "forecasting"
+    val forecastingDb = "mongodb://$mongoHost:$mongoPort"
+
+    return AppConfig(
+        mongoUri = forecastingDb,
+        mongoDatabase = mongoDbName,
         monitoringServiceUrl = System.getenv("MONITORING_SERVICE_URL") ?: "http://monitoring-service:3000",
         thresholdServiceUrl = System.getenv("THRESHOLD_SERVICE_URL") ?: "http://threshold-service:3000",
         lookbackDays = System.getenv("LOOKBACK_DAYS")?.toIntOrNull() ?: 30,
         schedulerHour = System.getenv("FORECAST_HOUR")?.toIntOrNull() ?: 0,
         schedulerMinute = System.getenv("FORECAST_MINUTE")?.toIntOrNull() ?: 0,
     )
+}
 
 private fun initializeDatabase(dependencies: Dependencies) {
     dependencies.mongoClient
@@ -50,7 +52,7 @@ private fun startScheduler(dependencies: Dependencies) {
 }
 
 private fun createServer(dependencies: Dependencies) =
-    embeddedServer(Netty, port = System.getenv("SERVER_PORT")?.toIntOrNull() ?: DEFAULT_PORT, host = "0.0.0.0") {
+    embeddedServer(Netty, port = System.getenv("PORT")?.toIntOrNull() ?: DEFAULT_PORT) {
         module(dependencies)
     }
 
