@@ -9,7 +9,6 @@ kmongo = "5.5.1"
 smile = "4.4.2"
 dotenvKotlin= "6.5.1"
 kotlinxDatetime = "0.7.1-0.6.x-compat"
-shadow = "9.3.0"
 
 [libraries]
 kotest-junit5-jvm = { module = "io.kotest:kotest-runner-junit5-jvm", version.ref = "kotest" }
@@ -68,4 +67,3 @@ gitSemVer = "org.danilopianini.git-sensitive-semantic-versioning:7.0.8"
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-qa = "org.danilopianini.gradle-kotlin-qa:0.99.0"
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
-shadow = { id = "com.gradleup.shadow", version.ref = "shadow" }

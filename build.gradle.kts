@@ -7,7 +7,6 @@ plugins {
     alias(libs.plugins.dokka)
     alias(libs.plugins.kotlin.qa)
     alias(libs.plugins.kotlin.serialization)
-    alias(libs.plugins.shadow)
     application
 }
 
@@ -17,6 +16,12 @@ repositories {
 
 application {
     mainClass.set("io.energyconsumptionoptimizer.forecastingservice.ServerKt")
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
 }
 
 buildscript {
@@ -49,6 +54,20 @@ dokka {
     dokkaPublications.html {
         outputDirectory.set(layout.buildDirectory.dir("$rootDir/doc"))
     }
+}
+
+// Fat Jar
+tasks.jar {
+    archiveFileName.set("app.jar")
+    manifest {
+        attributes["Main-Class"] = application.mainClass.get()
+    }
+    from(
+        configurations.runtimeClasspath
+            .get()
+            .map { if (it.isDirectory) it else zipTree(it) },
+    )
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
 tasks.withType<Detekt>().configureEach {
