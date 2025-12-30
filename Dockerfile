@@ -10,7 +10,7 @@ RUN --mount=type=cache,target=/home/gradle/.gradle/caches \
     gradle jar --parallel
 
 # Stage 2: Runtime with slim JDK
-FROM eclipse-temurin:22-jre-alpine
+FROM eclipse-temurin:23-jre-alpine
 WORKDIR /app
 
 COPY --from=build /usr/src/app/build/libs/app.jar app.jar
