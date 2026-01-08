@@ -1,5 +1,5 @@
 {
-  "name": "template-for-kotlin-projects",
+  "name": "forecast-service",
   "devDependencies": {
     "semantic-release-preconfigured-conventional-commits": "^1.1.152"
   },
