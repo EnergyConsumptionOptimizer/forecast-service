@@ -22,6 +22,9 @@ The Forecast Service is responsible for generating energy consumption prediction
 
 ## REST API Endpoints
 
+### Health Check
+- `GET /health`
+
 ### Forecasts
 - `GET /api/forecasts`
 - `GET /api/forecasts/{utilityType}`
