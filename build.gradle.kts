@@ -35,6 +35,7 @@ dependencies {
     testImplementation(libs.ktor.server.test.host)
     testImplementation(libs.ktor.client.resources)
     testImplementation(libs.ktor.client.mock)
+    testImplementation(libs.mockk)
     implementation(libs.bundles.ktor)
     implementation(libs.logback.classic)
     implementation(libs.kotlinx.coroutines.core)

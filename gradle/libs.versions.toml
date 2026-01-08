@@ -1,5 +1,6 @@
 [versions]
 kotest = "6.0.7"
+mockk = "1.14.7"
 kotlin = "2.3.0"
 ktor = "3.3.3"
 kotlinxSerializationJson = "1.10.0-RC"
@@ -43,6 +44,8 @@ kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serializa
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
 dotenv-kotlin = { group = "io.github.cdimascio", name = "dotenv-kotlin", version.ref = "dotenvKotlin" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
+
+mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 
 [bundles]
 kotlin-testing = [ "kotest-junit5-jvm", "kotest-assertions-core-jvm" ]
