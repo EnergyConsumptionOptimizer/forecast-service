@@ -15,5 +15,5 @@ fun Route.healthRoutes() {
 
 @Serializable
 data class HealthResponse(
-    val status: String = "UP",
+    val status: String = "OK",
 )

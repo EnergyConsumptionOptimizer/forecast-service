@@ -61,14 +61,14 @@ class ForecastApiTest :
             )
         }
 
-        "GET /api/health should return 200 OK" {
+        "GET /health should return 200 OK" {
             testApplication {
                 configureTestApplication(mockAuthMiddleware) { healthRoutes() }
 
                 val response = createApiClient().get(HealthResource())
 
                 response.status shouldBe HttpStatusCode.OK
-                response.body<HealthResponse>().status shouldBe "UP"
+                response.body<HealthResponse>().status shouldBe "OK"
             }
         }
 

@@ -4,5 +4,5 @@ import io.ktor.resources.Resource
 import kotlinx.serialization.Serializable
 
 @Serializable
-@Resource("/api/health")
+@Resource("/health")
 class HealthResource
