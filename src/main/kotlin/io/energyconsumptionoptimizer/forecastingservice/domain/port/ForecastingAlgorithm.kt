@@ -2,7 +2,16 @@ package io.energyconsumptionoptimizer.forecastingservice.domain.port
 
 import io.energyconsumptionoptimizer.forecastingservice.domain.value.ForecastedDataPoint
 
+/**
+ * Strategy contract for forecasting algorithms used by the service.
+ *
+ * Implementations produce a sequence of `ForecastedDataPoint` values
+ * given historical observations and a forecast horizon.
+ */
 interface ForecastingAlgorithm {
+    /**
+     * Human-readable algorithm name.
+     */
     val name: String
 
     companion object {
@@ -10,11 +19,23 @@ interface ForecastingAlgorithm {
         const val PERCENT = 100
     }
 
+    /**
+     * Produce forecasted data points for the given `historicalData` and `horizon` (days).
+     *
+     * @param historicalData historical observations used as input
+     * @param horizon number of days into the future to forecast (must be > 0)
+     * @return ordered list of [ForecastedDataPoint]
+     * @throws IllegalArgumentException When inputs are invalid (see [validateInputs]).
+     */
     suspend fun forecast(
         historicalData: List<HistoricalData>,
         horizon: Int,
     ): List<ForecastedDataPoint>
 
+    /**
+     * Validate inputs commonly required by forecasting algorithms.
+     * Throws `IllegalArgumentException` when inputs are invalid.
+     */
     fun validateInputs(
         historicalData: List<HistoricalData>,
         horizon: Int,

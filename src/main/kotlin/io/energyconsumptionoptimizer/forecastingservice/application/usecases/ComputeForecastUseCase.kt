@@ -14,12 +14,36 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.plus
 
+/**
+ * Computes forecasts for utilities and persists the results.
+ *
+ * Coordinates retrieval of historical observations via [HistoricalDataProvider], delegates
+ * forecasting logic to a [ForecastingAlgorithm], aggregates predicted values per
+ * period, notifies thresholds through [ThresholdNotifier], and persists the resulting
+ * [ForecastedConsumption] via [ForecastRepository]. Methods prefer non-blocking
+ * concurrency primitives; `computeAll` runs per-utility computations concurrently.
+ *
+ * @param repository Repository used to persist computed [ForecastedConsumption].
+ * @param historicalDataProvider Source port for aggregated historical observations.
+ * @param forecastingAlgorithm Algorithm used to produce time-series forecasts.
+ * @param thresholdNotifier Notifies external systems when aggregated forecasts exceed thresholds.
+ * @constructor Creates a use case instance with the required domain ports and collaborators.
+ */
 class ComputeForecastUseCase(
     private val repository: ForecastRepository,
     private val historicalDataProvider: HistoricalDataProvider,
     private val forecastingAlgorithm: ForecastingAlgorithm,
     private val thresholdNotifier: ThresholdNotifier,
 ) {
+    /**
+     * Computes forecasts for all supported utilities concurrently.
+     *
+     * Launches one coroutine per entry in [UtilityType.entries], invoking [compute]
+     * and collecting successful results. Failures for individual utilities are
+     * isolated so one failing utility does not cancel the entire operation.
+     *
+     * @return A `List` of successfully computed [ForecastedConsumption] objects.
+     */
     suspend fun computeAll(): List<ForecastedConsumption> =
         coroutineScope {
             UtilityType.entries
@@ -28,6 +52,20 @@ class ComputeForecastUseCase(
                 .filterNotNull()
         }
 
+    /**
+     * Computes a forecast for a single [utilityType].
+     *
+     * Steps performed:
+     * 1. Fetches aggregated historical observations from [HistoricalDataProvider].
+     * 2. Determines an optimal forecast horizon based on available history.
+     * 3. Delegates prediction to [ForecastingAlgorithm].
+     * 4. Notifies aggregations to [ThresholdNotifier].
+     * 5. Persists the created [ForecastedConsumption] using [ForecastRepository].
+     *
+     * @param utilityType Type of utility to compute the forecast for, see [UtilityType].
+     * @return The persisted [ForecastedConsumption] for the requested utility.
+     * @throws IllegalArgumentException If no historical data points are available to compute a horizon.
+     */
     suspend fun compute(utilityType: UtilityType): ForecastedConsumption {
         val historicalData = historicalDataProvider.fetchAggregatedHistoricalData(utilityType)
         val forecastHorizon = calculateOptimalHorizon(historicalData.size)

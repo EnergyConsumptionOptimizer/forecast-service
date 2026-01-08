@@ -13,6 +13,17 @@ import java.time.Duration
 import java.time.LocalDateTime
 import java.time.LocalTime
 
+/**
+ * Schedules periodic execution of forecast computation.
+ *
+ * Launches a coroutine that waits until the configured `executionTime` each day
+ * and invokes [ComputeForecastUseCase.computeAll]. The scheduler is tolerant to
+ * failures from the use case — individual runs are wrapped with `runCatching`.
+ *
+ * @param computeForecastUseCase Use case invoked on each scheduled run.
+ * @param executionTime Local time of day when computation should run (defaults to 00:01).
+ * @param dispatcher Coroutine dispatcher used for scheduling work.
+ */
 class ForecastScheduler(
     private val computeForecastUseCase: ComputeForecastUseCase,
     private val executionTime: LocalTime = LocalTime.of(0, 1),

@@ -11,6 +11,13 @@ import io.ktor.server.application.install
 import io.ktor.server.plugins.statuspages.StatusPages
 import io.ktor.server.response.respond
 
+/**
+ * Install HTTP error mappings that translate domain and infrastructure
+ * exceptions into appropriate HTTP responses with an [ErrorResponse] body.
+ *
+ * The function registers handlers for known exceptions such as
+ * [UnknownUtilityTypeException], [InvalidTokenException], and others.
+ */
 fun Application.configureErrorHandling() {
     install(StatusPages) {
         exception<UnknownUtilityTypeException> { call, cause ->

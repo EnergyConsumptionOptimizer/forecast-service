@@ -9,13 +9,22 @@ import io.ktor.client.call.body
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
 import io.ktor.http.isSuccess
-import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
-import kotlinx.datetime.UtcOffset
 import kotlinx.datetime.toLocalDateTime
 import kotlinx.serialization.Serializable
 import kotlin.time.Instant
 
+/**
+ * HTTP adapter that fetches aggregated historical observations from the
+ * monitoring service and converts them into domain [HistoricalData].
+ *
+ * The adapter expects the monitoring service to return a list of measurements
+ * where each measurement corresponds to a single day. Responses are validated
+ * and converted to [ConsumptionValue] instances.
+ *
+ * @param httpClient Ktor [HttpClient] used to perform requests.
+ * @param baseUrl Base URL of the monitoring service.
+ */
 class MonitoringServiceClient(
     private val httpClient: HttpClient,
     private val baseUrl: String,
@@ -51,6 +60,11 @@ class MonitoringServiceClient(
     }
 }
 
+/**
+ * Exception thrown when monitoring service responses cannot be processed.
+ *
+ * @param message Diagnostic message describing the failure.
+ */
 class MonitoringServiceException(
     message: String,
 ) : RuntimeException(message)

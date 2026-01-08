@@ -1,6 +1,5 @@
 package io.energyconsumptionoptimizer.forecastingservice
 
-import io.energyconsumptionoptimizer.forecastingservice.interfaces.webapi.middleware.AuthMiddleware
 import io.energyconsumptionoptimizer.forecastingservice.interfaces.webapi.middleware.configureAuthentication
 import io.energyconsumptionoptimizer.forecastingservice.interfaces.webapi.middleware.configureErrorHandling
 import io.energyconsumptionoptimizer.forecastingservice.interfaces.webapi.routes.forecastRoutes
@@ -13,6 +12,14 @@ import io.ktor.server.resources.Resources
 import io.ktor.server.routing.routing
 import kotlinx.serialization.json.Json
 
+/**
+ * Application entry point for Ktor modules wiring.
+ *
+ * Configures serialization, error handling, authentication and routing
+ * using the provided [Dependencies] instance.
+ *
+ * @param dependencies Composition root containing required adapters and use cases.
+ */
 fun Application.module(dependencies: Dependencies) {
     configureSerialization()
     configureErrorHandling()

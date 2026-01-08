@@ -12,6 +12,16 @@ import org.litote.kmongo.coroutine.CoroutineClient
 import org.litote.kmongo.coroutine.CoroutineCollection
 import org.litote.kmongo.eq
 
+/**
+ * Mongo-backed implementation of [ForecastRepository].
+ *
+ * Persists [ForecastedConsumption] entities into a MongoDB collection and
+ * translates between domain objects and storage documents via the mapper helpers.
+ *
+ * @constructor Create a repository backed by `mongoClient` and targeting `databaseName`.
+ * @param mongoClient KMongo [CoroutineClient] used to access the database.
+ * @param databaseName Name of the MongoDB database (defaults to `forecast-service`).
+ */
 class ForecastMongoRepository(
     mongoClient: CoroutineClient,
     databaseName: String = "forecast-service",

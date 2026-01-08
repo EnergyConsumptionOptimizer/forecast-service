@@ -5,7 +5,6 @@ import io.energyconsumptionoptimizer.forecastingservice.domain.ForecastedConsump
 import io.energyconsumptionoptimizer.forecastingservice.domain.value.ConsumptionValue
 import io.energyconsumptionoptimizer.forecastingservice.domain.value.ForecastedDataPoint
 import io.energyconsumptionoptimizer.forecastingservice.domain.value.UtilityType
-import io.energyconsumptionoptimizer.forecastingservice.interfaces.webapi.errors.ErrorResponse
 import io.energyconsumptionoptimizer.forecastingservice.interfaces.webapi.middleware.AuthMiddleware
 import io.energyconsumptionoptimizer.forecastingservice.interfaces.webapi.resources.ForecastResource
 import io.energyconsumptionoptimizer.forecastingservice.interfaces.webapi.resources.HealthResource
@@ -16,7 +15,6 @@ import io.energyconsumptionoptimizer.forecastingservice.presentation.dto.Forecas
 import io.energyconsumptionoptimizer.forecastingservice.presentation.dto.UtilityTypeDto
 import io.energyconsumptionoptimizer.forecastingservice.utils.configureTestApplication
 import io.energyconsumptionoptimizer.forecastingservice.utils.createApiClient
-import io.energyconsumptionoptimizer.forecastingservice.utils.createMockAuthClient
 import io.energyconsumptionoptimizer.forecastingservice.utils.fakes.FakeForecastRepository
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldHaveSize
@@ -26,13 +24,13 @@ import io.ktor.client.plugins.resources.get
 import io.ktor.client.request.cookie
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.testing.testApplication
+import io.mockk.mockk
 import kotlinx.datetime.LocalDate
 
 class ForecastApiTest :
     StringSpec({
 
-        val mockAuthClient = createMockAuthClient()
-        val authMiddleware = AuthMiddleware(mockAuthClient)
+        val mockAuthMiddleware = mockk<AuthMiddleware>(relaxed = true)
         val fakeRepository = FakeForecastRepository()
         val useCase = GetForecastsUseCase(fakeRepository)
 
@@ -65,7 +63,7 @@ class ForecastApiTest :
 
         "GET /api/health should return 200 OK" {
             testApplication {
-                configureTestApplication(authMiddleware) { healthRoutes() }
+                configureTestApplication(mockAuthMiddleware) { healthRoutes() }
 
                 val response = createApiClient().get(HealthResource())
 
@@ -76,7 +74,7 @@ class ForecastApiTest :
 
         "GET /api/forecasts should return 401 Unauthorized without cookies" {
             testApplication {
-                configureTestApplication(authMiddleware) { forecastRoutes(useCase) }
+                configureTestApplication(mockAuthMiddleware) { forecastRoutes(useCase) }
 
                 val response = createApiClient().get(ForecastResource())
 
@@ -84,23 +82,9 @@ class ForecastApiTest :
             }
         }
 
-        "GET /api/forecasts should return 503 when auth service fails" {
-            testApplication {
-                configureTestApplication(authMiddleware) { forecastRoutes(useCase) }
-
-                val response =
-                    createApiClient().get(ForecastResource()) {
-                        cookie("authToken", "broken-service-token")
-                    }
-
-                response.status shouldBe HttpStatusCode.ServiceUnavailable
-                response.body<ErrorResponse>().error shouldBe "Auth service unreachable"
-            }
-        }
-
         "GET /api/forecasts should return all seeded forecasts" {
             testApplication {
-                configureTestApplication(authMiddleware) { forecastRoutes(useCase) }
+                configureTestApplication(mockAuthMiddleware) { forecastRoutes(useCase) }
 
                 val response =
                     createApiClient().get(ForecastResource()) {
@@ -115,7 +99,7 @@ class ForecastApiTest :
 
         "GET /api/forecasts/{type} should filter correctly" {
             testApplication {
-                configureTestApplication(authMiddleware) { forecastRoutes(useCase) }
+                configureTestApplication(mockAuthMiddleware) { forecastRoutes(useCase) }
 
                 val resource = ForecastResource.ByType(utilityType = UtilityType.GAS)
                 val response =

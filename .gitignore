@@ -48,3 +48,4 @@ ndkBuild/
 
 # Ignore Gradle build output directory
 build
+doc

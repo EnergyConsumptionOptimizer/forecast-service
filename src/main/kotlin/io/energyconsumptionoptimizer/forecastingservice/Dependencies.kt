@@ -22,9 +22,24 @@ import org.litote.kmongo.coroutine.coroutine
 import org.litote.kmongo.reactivestreams.KMongo
 import java.time.LocalTime
 
+/**
+ * Runtime configuration values for the application.
+ *
+ * These values are typically populated from environment variables at startup.
+ *
+ * @property mongoUri MongoDB connection URI.
+ * @property mongoDatabase Database name to use for persistence.
+ * @property userServiceUrl Base URL for the user service.
+ * @property monitoringServiceUrl Base URL for the monitoring service.
+ * @property thresholdServiceUrl Base URL for the threshold evaluation service.
+ * @property lookbackDays Number of historical days to include in forecasts.
+ * @property schedulerHour Hour of day for the daily scheduler.
+ * @property schedulerMinute Minute of hour for the daily scheduler.
+ */
 data class AppConfig(
     val mongoUri: String,
     val mongoDatabase: String,
+    val userServiceUrl: String,
     val monitoringServiceUrl: String,
     val thresholdServiceUrl: String,
     val lookbackDays: Int,
@@ -32,6 +47,14 @@ data class AppConfig(
     val schedulerMinute: Int,
 )
 
+/**
+ * Composition root holding lazily-initialized application dependencies.
+ *
+ * Provides domain ports and adapters wired together using the provided
+ * [AppConfig]. Properties are lazily created to avoid eager startup costs.
+ *
+ * @param config Application configuration used to initialize adapters.
+ */
 class Dependencies(
     private val config: AppConfig,
 ) {
@@ -66,7 +89,7 @@ class Dependencies(
         ThresholdServiceClient(httpClient, config.thresholdServiceUrl)
     }
 
-    val authMiddleware = AuthMiddleware(httpClient)
+    val authMiddleware = AuthMiddleware(httpClient, config.userServiceUrl)
 
     val forecastRepository: ForecastRepository by lazy {
         ForecastMongoRepository(

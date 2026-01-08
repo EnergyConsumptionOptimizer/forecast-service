@@ -8,6 +8,12 @@ import io.energyconsumptionoptimizer.forecastingservice.domain.value.UtilityType
 import io.energyconsumptionoptimizer.forecastingservice.storage.mongodb.document.ForecastedConsumptionDocument
 import io.energyconsumptionoptimizer.forecastingservice.storage.mongodb.document.ForecastedDataPointDocument
 
+/**
+ * Convert a domain [ForecastedConsumption] into a MongoDB persistence document.
+ *
+ * @receiver Source domain forecast to convert.
+ * @return [ForecastedConsumptionDocument] ready for serialization and storage.
+ */
 fun ForecastedConsumption.toDocument(): ForecastedConsumptionDocument =
     ForecastedConsumptionDocument(
         _id = id.toString(),
@@ -22,6 +28,12 @@ fun ForecastedConsumption.toDocument(): ForecastedConsumptionDocument =
         computedAt = computedAt,
     )
 
+/**
+ * Reconstruct a domain [ForecastedConsumption] from a persistence document.
+ *
+ * @receiver Document representation loaded from storage.
+ * @return Restored [ForecastedConsumption] domain object.
+ */
 fun ForecastedConsumptionDocument.toDomain(): ForecastedConsumption =
     ForecastedConsumption.fromPersistence(
         id = ForecastId.from(_id),
