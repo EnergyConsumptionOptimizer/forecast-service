@@ -10,6 +10,7 @@ import io.energyconsumptionoptimizer.forecastingservice.interfaces.algorithm.Ran
 import io.energyconsumptionoptimizer.forecastingservice.interfaces.http.MonitoringServiceClient
 import io.energyconsumptionoptimizer.forecastingservice.interfaces.http.ThresholdServiceClient
 import io.energyconsumptionoptimizer.forecastingservice.interfaces.scheduler.ForecastScheduler
+import io.energyconsumptionoptimizer.forecastingservice.interfaces.webapi.middleware.AuthMiddleware
 import io.energyconsumptionoptimizer.forecastingservice.storage.mongodb.ForecastMongoRepository
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.cio.CIO
@@ -64,6 +65,8 @@ class Dependencies(
     val thresholdNotifier: ThresholdNotifier by lazy {
         ThresholdServiceClient(httpClient, config.thresholdServiceUrl)
     }
+
+    val authMiddleware = AuthMiddleware(httpClient)
 
     val forecastRepository: ForecastRepository by lazy {
         ForecastMongoRepository(

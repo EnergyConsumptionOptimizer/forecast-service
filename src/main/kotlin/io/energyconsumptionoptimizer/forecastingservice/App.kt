@@ -1,5 +1,6 @@
 package io.energyconsumptionoptimizer.forecastingservice
 
+import io.energyconsumptionoptimizer.forecastingservice.interfaces.webapi.middleware.AuthMiddleware
 import io.energyconsumptionoptimizer.forecastingservice.interfaces.webapi.middleware.configureAuthentication
 import io.energyconsumptionoptimizer.forecastingservice.interfaces.webapi.middleware.configureErrorHandling
 import io.energyconsumptionoptimizer.forecastingservice.interfaces.webapi.routes.forecastRoutes
@@ -14,9 +15,9 @@ import kotlinx.serialization.json.Json
 
 fun Application.module(dependencies: Dependencies) {
     configureSerialization()
-    configureAuthentication(dependencies.httpClient)
-    configureRouting(dependencies)
     configureErrorHandling()
+    configureAuthentication(dependencies.authMiddleware)
+    configureRouting(dependencies)
 }
 
 private fun Application.configureSerialization() {
