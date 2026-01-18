@@ -1,5 +1,5 @@
 # Stage 1: Build with Gradle
-FROM gradle:9.2.1-jdk21 AS build
+FROM gradle:9.2.1-jdk21-jammy AS build
 WORKDIR /usr/src/app
 
 COPY build.gradle.kts settings.gradle.kts gradle.properties ./
@@ -10,7 +10,7 @@ RUN --mount=type=cache,target=/home/gradle/.gradle/caches \
     gradle jar --parallel
 
 # Stage 2: Runtime with slim JDK
-FROM eclipse-temurin:24-jre-alpine
+FROM eclipse-temurin:21-jre-jammy
 WORKDIR /app
 
 COPY --from=build /usr/src/app/build/libs/app.jar app.jar
