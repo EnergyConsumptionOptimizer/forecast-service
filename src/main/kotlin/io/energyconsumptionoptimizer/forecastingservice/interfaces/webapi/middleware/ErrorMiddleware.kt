@@ -2,7 +2,6 @@ package io.energyconsumptionoptimizer.forecastingservice.interfaces.webapi.middl
 
 import io.energyconsumptionoptimizer.forecastingservice.domain.error.UnknownUtilityTypeException
 import io.energyconsumptionoptimizer.forecastingservice.interfaces.webapi.errors.AuthServiceUnavailableException
-import io.energyconsumptionoptimizer.forecastingservice.interfaces.webapi.errors.ErrorResponse
 import io.energyconsumptionoptimizer.forecastingservice.interfaces.webapi.errors.InvalidTokenException
 import io.energyconsumptionoptimizer.forecastingservice.interfaces.webapi.errors.UnauthorizedException
 import io.ktor.http.HttpStatusCode
@@ -10,38 +9,61 @@ import io.ktor.server.application.Application
 import io.ktor.server.application.install
 import io.ktor.server.plugins.statuspages.StatusPages
 import io.ktor.server.response.respond
+import kotlinx.serialization.Serializable
 
-/**
- * Install HTTP error mappings that translate domain and infrastructure
- * exceptions into appropriate HTTP responses with an [ErrorResponse] body.
- *
- * The function registers handlers for known exceptions such as
- * [UnknownUtilityTypeException], [InvalidTokenException], and others.
- */
 fun Application.configureErrorHandling() {
     install(StatusPages) {
         exception<UnknownUtilityTypeException> { call, cause ->
-            call.respond(HttpStatusCode.BadRequest, ErrorResponse(cause.message ?: "Invalid utility type"))
+            call.respond(
+                HttpStatusCode.BadRequest,
+                ApiErrorResponse(
+                    code = "VALIDATION_ERROR",
+                    message = "Invalid utility type",
+                    errors = mapOf("utilityType" to (cause.message ?: "Unknown utility type")),
+                ),
+            )
         }
 
         exception<IllegalArgumentException> { call, cause ->
-            call.respond(HttpStatusCode.BadRequest, ErrorResponse(cause.message ?: "Invalid request"))
+            call.respond(
+                HttpStatusCode.BadRequest,
+                ApiErrorResponse(code = "BAD_REQUEST", message = cause.message ?: "Invalid request"),
+            )
         }
 
         exception<InvalidTokenException> { call, cause ->
-            call.respond(HttpStatusCode.Unauthorized, ErrorResponse(cause.message ?: "Authentication required"))
+            call.respond(
+                HttpStatusCode.Unauthorized,
+                ApiErrorResponse(code = "UNAUTHORIZED", message = cause.message ?: "Authentication required"),
+            )
         }
 
         exception<UnauthorizedException> { call, cause ->
-            call.respond(HttpStatusCode.Forbidden, ErrorResponse(cause.message ?: "Access denied"))
+            call.respond(
+                HttpStatusCode.Forbidden,
+                ApiErrorResponse(code = "FORBIDDEN", message = cause.message ?: "Access denied"),
+            )
         }
 
         exception<AuthServiceUnavailableException> { call, cause ->
-            call.respond(HttpStatusCode.ServiceUnavailable, ErrorResponse(cause.message ?: "Authentication service unavailable"))
+            call.respond(
+                HttpStatusCode.ServiceUnavailable,
+                ApiErrorResponse(code = "INFRASTRUCTURE_ERROR", message = cause.message ?: "Authentication service unavailable"),
+            )
         }
 
         exception<Exception> { call, _ ->
-            call.respond(HttpStatusCode.InternalServerError, ErrorResponse("An unexpected error occurred"))
+            call.respond(
+                HttpStatusCode.InternalServerError,
+                ApiErrorResponse(code = "INTERNAL_ERROR", message = "An unexpected error occurred"),
+            )
         }
     }
 }
+
+@Serializable
+data class ApiErrorResponse(
+    val code: String,
+    val message: String,
+    val errors: Map<String, String>? = null,
+)
