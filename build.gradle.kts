@@ -32,12 +32,18 @@ buildscript {
 
 dependencies {
     testImplementation(libs.bundles.kotlin.testing)
+    testImplementation(libs.ktor.server.test.host)
+    testImplementation(libs.ktor.client.resources)
+    testImplementation(libs.ktor.client.mock)
+    testImplementation(libs.mockk)
     implementation(libs.bundles.ktor)
     implementation(libs.logback.classic)
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.serialization.json)
+    implementation(libs.kotlinx.datetime)
     implementation(libs.kmongo.coroutine.serialization)
     implementation(libs.dotenv.kotlin)
+    implementation(libs.smile.core)
 }
 
 gitSemVer {
