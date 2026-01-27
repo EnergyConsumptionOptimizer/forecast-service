@@ -26,7 +26,7 @@ The Forecast Service is responsible for generating energy consumption prediction
 - `GET /api/forecasts/{utilityType}`
 
 ## Documentation
-Documentation of the kotlin code base can be found at the [KDoc](https://energyconsumptionoptimizer.github.io/forecast-service/).
+Documentation of the kotlin code base can be found at the [Dokka](https://energyconsumptionoptimizer.github.io/forecast-service/).
 
 ## Authors
 - Rares Vasiliu ([rares-vsl](https://github.com/rares-vsl))
