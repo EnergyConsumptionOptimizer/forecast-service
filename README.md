@@ -21,13 +21,12 @@ The Forecast Service is responsible for generating energy consumption prediction
 [![Renovate](https://img.shields.io/badge/Renovate-1A1F6C?style=for-the-badge&logo=renovate&logoColor=white)](https://renovatebot.com/)
 
 ## REST API Endpoints
-
-### Health Check
-- `GET /health`
-
 ### Forecasts
 - `GET /api/forecasts`
 - `GET /api/forecasts/{utilityType}`
+
+## Documentation
+Documentation of the kotlin code base can be found at the [KDoc](https://energyconsumptionoptimizer.github.io/forecast-service/).
 
 ## Authors
 - Rares Vasiliu ([rares-vsl](https://github.com/rares-vsl))
