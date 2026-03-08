@@ -10,7 +10,7 @@ RUN --mount=type=cache,target=/home/gradle/.gradle/caches \
     gradle jar --parallel
 
 # Stage 2: Runtime with slim JDK
-FROM eclipse-temurin:21-jre-jammy
+FROM eclipse-temurin:25-jre-jammy
 WORKDIR /app
 
 COPY --from=build /usr/src/app/build/libs/app.jar app.jar
