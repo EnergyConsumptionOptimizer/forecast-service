@@ -6,6 +6,7 @@ import io.energyconsumptionoptimizer.forecastservice.domain.value.ConsumptionVal
 import io.energyconsumptionoptimizer.forecastservice.domain.value.ForecastedDataPoint
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.TimeZone
+import kotlinx.datetime.plus
 import kotlinx.datetime.toLocalDateTime
 import kotlin.time.Clock
 
