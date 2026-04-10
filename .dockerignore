@@ -1,0 +1,32 @@
+# Git
+.git
+.gitignore
+
+# Configurazione locale Gradle (non deve mai finire nell'immagine)
+local.properties
+
+# Cache e output di Gradle
+.gradle/
+build/
+*/build/
+
+# IDE (IntelliJ IDEA, VSCode)
+.idea/
+*.iml
+*.iws
+*.ipr
+.vscode/
+
+# Script locali o log
+*.log
+*.sh.user
+
+# OS-specific (Mac / Windows)
+.DS_Store
+Thumbs.db
+
+# Sicurezza (evitiamo di copiare chiavi locali per errore)
+*.jks
+*.keystore
+*.pem
+.env

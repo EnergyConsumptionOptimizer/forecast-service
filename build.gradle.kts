@@ -8,20 +8,21 @@ plugins {
     alias(libs.plugins.kotlin.qa)
     alias(libs.plugins.kotlin.serialization)
     application
+    alias(libs.plugins.jib)
 }
 
 repositories {
     mavenCentral()
 }
 
-application {
-    mainClass.set("io.energyconsumptionoptimizer.forecastingservice.ServerKt")
-}
-
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(21)
     }
+}
+
+application {
+    mainClass.set("io.energyconsumptionoptimizer.forecastservice.ServerKt")
 }
 
 buildscript {
@@ -57,7 +58,6 @@ dokka {
     }
 }
 
-// Fat Jar
 tasks.jar {
     archiveFileName.set("app.jar")
     manifest {
@@ -69,6 +69,36 @@ tasks.jar {
             .map { if (it.isDirectory) it else zipTree(it) },
     )
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+jib {
+    from {
+        image = "eclipse-temurin:21-jre-jammy"
+        if (System.getenv("CI") == "true") {
+            platforms {
+                platform {
+                    architecture = "amd64"
+                    os = "linux"
+                }
+                platform {
+                    architecture = "arm64"
+                    os = "linux"
+                }
+            }
+        }
+    }
+    to {
+        image = "ghcr.io/energyconsumptionoptimizer/${project.name}"
+        if (System.getenv("CI") == "true") {
+            tags = setOf("latest")
+        }
+    }
+    container {
+        mainClass = application.mainClass.get()
+        ports = listOf("3000")
+        user = "root"
+        environment = mapOf("KTOR_DEVELOPMENT" to "true")
+    }
 }
 
 tasks.withType<Detekt>().configureEach {

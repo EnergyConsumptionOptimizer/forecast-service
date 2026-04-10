@@ -1,8 +1,8 @@
-package io.energyconsumptionoptimizer.forecastingservice.utils.fakes
+package io.energyconsumptionoptimizer.forecastservice.utils.fakes
 
-import io.energyconsumptionoptimizer.forecastingservice.domain.port.ThresholdNotifier
-import io.energyconsumptionoptimizer.forecastingservice.domain.value.PeriodType
-import io.energyconsumptionoptimizer.forecastingservice.domain.value.UtilityType
+import io.energyconsumptionoptimizer.forecastservice.domain.port.ThresholdNotifier
+import io.energyconsumptionoptimizer.forecastservice.domain.value.PeriodType
+import io.energyconsumptionoptimizer.forecastservice.domain.value.UtilityType
 
 class FakeThresholdNotifier : ThresholdNotifier {
     val notifications = mutableListOf<Pair<UtilityType, Map<PeriodType, Double>>>()

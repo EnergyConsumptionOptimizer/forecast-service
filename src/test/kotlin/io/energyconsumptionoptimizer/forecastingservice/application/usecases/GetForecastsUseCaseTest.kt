@@ -1,10 +1,10 @@
-package io.energyconsumptionoptimizer.forecastingservice.application.usecases
+package io.energyconsumptionoptimizer.forecastservice.application.usecases
 
-import io.energyconsumptionoptimizer.forecastingservice.domain.ForecastedConsumption
-import io.energyconsumptionoptimizer.forecastingservice.domain.value.ConsumptionValue
-import io.energyconsumptionoptimizer.forecastingservice.domain.value.ForecastedDataPoint
-import io.energyconsumptionoptimizer.forecastingservice.domain.value.UtilityType
-import io.energyconsumptionoptimizer.forecastingservice.utils.fakes.FakeForecastRepository
+import io.energyconsumptionoptimizer.forecastservice.domain.ForecastedConsumption
+import io.energyconsumptionoptimizer.forecastservice.domain.value.ConsumptionValue
+import io.energyconsumptionoptimizer.forecastservice.domain.value.ForecastedDataPoint
+import io.energyconsumptionoptimizer.forecastservice.domain.value.UtilityType
+import io.energyconsumptionoptimizer.forecastservice.utils.fakes.FakeForecastRepository
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.shouldBe

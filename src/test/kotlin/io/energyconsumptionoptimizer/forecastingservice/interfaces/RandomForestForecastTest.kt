@@ -1,8 +1,8 @@
-package io.energyconsumptionoptimizer.forecastingservice.interfaces
+package io.energyconsumptionoptimizer.forecastservice.interfaces
 
-import io.energyconsumptionoptimizer.forecastingservice.domain.port.HistoricalData
-import io.energyconsumptionoptimizer.forecastingservice.domain.value.ConsumptionValue
-import io.energyconsumptionoptimizer.forecastingservice.interfaces.algorithm.RandomForestForecast
+import io.energyconsumptionoptimizer.forecastservice.domain.port.HistoricalData
+import io.energyconsumptionoptimizer.forecastservice.domain.value.ConsumptionValue
+import io.energyconsumptionoptimizer.forecastservice.interfaces.algorithm.RandomForestForecast
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.doubles.shouldBeGreaterThan

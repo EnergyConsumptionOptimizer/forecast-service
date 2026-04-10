@@ -1,8 +1,8 @@
-package io.energyconsumptionoptimizer.forecastingservice.utils
+package io.energyconsumptionoptimizer.forecastservice.utils
 
-import io.energyconsumptionoptimizer.forecastingservice.interfaces.webapi.middleware.AuthMiddleware
-import io.energyconsumptionoptimizer.forecastingservice.interfaces.webapi.middleware.configureAuthentication
-import io.energyconsumptionoptimizer.forecastingservice.interfaces.webapi.middleware.configureErrorHandling
+import io.energyconsumptionoptimizer.forecastservice.interfaces.webapi.middleware.AuthMiddleware
+import io.energyconsumptionoptimizer.forecastservice.interfaces.webapi.middleware.configureAuthentication
+import io.energyconsumptionoptimizer.forecastservice.interfaces.webapi.middleware.configureErrorHandling
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.mock.MockEngine
 import io.ktor.client.engine.mock.respond

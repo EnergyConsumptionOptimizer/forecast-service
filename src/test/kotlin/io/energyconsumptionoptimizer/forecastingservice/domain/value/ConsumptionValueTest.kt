@@ -1,4 +1,4 @@
-package io.energyconsumptionoptimizer.forecastingservice.domain.value
+package io.energyconsumptionoptimizer.forecastservice.domain.value
 
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.BehaviorSpec

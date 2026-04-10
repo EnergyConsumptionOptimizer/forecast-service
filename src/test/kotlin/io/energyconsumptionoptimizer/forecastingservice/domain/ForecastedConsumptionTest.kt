@@ -1,8 +1,8 @@
-package io.energyconsumptionoptimizer.forecastingservice.domain
+package io.energyconsumptionoptimizer.forecastservice.domain
 
-import io.energyconsumptionoptimizer.forecastingservice.domain.value.ConsumptionValue
-import io.energyconsumptionoptimizer.forecastingservice.domain.value.ForecastedDataPoint
-import io.energyconsumptionoptimizer.forecastingservice.domain.value.UtilityType
+import io.energyconsumptionoptimizer.forecastservice.domain.value.ConsumptionValue
+import io.energyconsumptionoptimizer.forecastservice.domain.value.ForecastedDataPoint
+import io.energyconsumptionoptimizer.forecastservice.domain.value.UtilityType
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.collections.shouldHaveSize

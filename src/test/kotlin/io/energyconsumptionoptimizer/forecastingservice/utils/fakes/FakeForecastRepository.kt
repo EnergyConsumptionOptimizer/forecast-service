@@ -1,9 +1,9 @@
-package io.energyconsumptionoptimizer.forecastingservice.utils.fakes
+package io.energyconsumptionoptimizer.forecastservice.utils.fakes
 
-import io.energyconsumptionoptimizer.forecastingservice.domain.ForecastedConsumption
-import io.energyconsumptionoptimizer.forecastingservice.domain.port.ForecastRepository
-import io.energyconsumptionoptimizer.forecastingservice.domain.value.ForecastId
-import io.energyconsumptionoptimizer.forecastingservice.domain.value.UtilityType
+import io.energyconsumptionoptimizer.forecastservice.domain.ForecastedConsumption
+import io.energyconsumptionoptimizer.forecastservice.domain.port.ForecastRepository
+import io.energyconsumptionoptimizer.forecastservice.domain.value.ForecastId
+import io.energyconsumptionoptimizer.forecastservice.domain.value.UtilityType
 import java.util.concurrent.ConcurrentHashMap
 
 class FakeForecastRepository : ForecastRepository {

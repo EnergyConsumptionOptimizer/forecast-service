@@ -1,11 +1,11 @@
-package io.energyconsumptionoptimizer.forecastingservice.application.usecases
+package io.energyconsumptionoptimizer.forecastservice.application.usecases
 
-import io.energyconsumptionoptimizer.forecastingservice.domain.value.PeriodType
-import io.energyconsumptionoptimizer.forecastingservice.domain.value.UtilityType
-import io.energyconsumptionoptimizer.forecastingservice.utils.fakes.FakeForecastRepository
-import io.energyconsumptionoptimizer.forecastingservice.utils.fakes.FakeForecastingAlgorithm
-import io.energyconsumptionoptimizer.forecastingservice.utils.fakes.FakeHistoricalDataProvider
-import io.energyconsumptionoptimizer.forecastingservice.utils.fakes.FakeThresholdNotifier
+import io.energyconsumptionoptimizer.forecastservice.domain.value.PeriodType
+import io.energyconsumptionoptimizer.forecastservice.domain.value.UtilityType
+import io.energyconsumptionoptimizer.forecastservice.utils.fakes.FakeForecastAlgorithm
+import io.energyconsumptionoptimizer.forecastservice.utils.fakes.FakeForecastRepository
+import io.energyconsumptionoptimizer.forecastservice.utils.fakes.FakeHistoricalDataProvider
+import io.energyconsumptionoptimizer.forecastservice.utils.fakes.FakeThresholdNotifier
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.maps.shouldContain
@@ -17,13 +17,13 @@ class ComputeForecastUseCaseTest :
     BehaviorSpec({
         val repository = FakeForecastRepository()
         val historicalDataProvider = FakeHistoricalDataProvider()
-        val forecastingAlgorithm = FakeForecastingAlgorithm()
+        val forecastAlgorithm = FakeForecastAlgorithm()
         val thresholdNotifier = FakeThresholdNotifier()
         val useCase =
             ComputeForecastUseCase(
                 repository = repository,
                 historicalDataProvider = historicalDataProvider,
-                forecastingAlgorithm = forecastingAlgorithm,
+                forecastAlgorithm = forecastAlgorithm,
                 thresholdNotifier = thresholdNotifier,
             )
 

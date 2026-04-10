@@ -1,6 +1,6 @@
-package io.energyconsumptionoptimizer.forecastingservice.domain.value
+package io.energyconsumptionoptimizer.forecastservice.domain.value
 
-import io.energyconsumptionoptimizer.forecastingservice.domain.error.UnknownUtilityTypeException
+import io.energyconsumptionoptimizer.forecastservice.domain.error.UnknownUtilityTypeException
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe

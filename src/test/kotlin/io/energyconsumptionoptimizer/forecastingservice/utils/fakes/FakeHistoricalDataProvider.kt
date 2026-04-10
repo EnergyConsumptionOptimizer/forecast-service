@@ -1,9 +1,9 @@
-package io.energyconsumptionoptimizer.forecastingservice.utils.fakes
+package io.energyconsumptionoptimizer.forecastservice.utils.fakes
 
-import io.energyconsumptionoptimizer.forecastingservice.domain.port.HistoricalData
-import io.energyconsumptionoptimizer.forecastingservice.domain.port.HistoricalDataProvider
-import io.energyconsumptionoptimizer.forecastingservice.domain.value.ConsumptionValue
-import io.energyconsumptionoptimizer.forecastingservice.domain.value.UtilityType
+import io.energyconsumptionoptimizer.forecastservice.domain.port.HistoricalData
+import io.energyconsumptionoptimizer.forecastservice.domain.port.HistoricalDataProvider
+import io.energyconsumptionoptimizer.forecastservice.domain.value.ConsumptionValue
+import io.energyconsumptionoptimizer.forecastservice.domain.value.UtilityType
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.minus

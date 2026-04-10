@@ -2,6 +2,7 @@
 .gradle/
 build/
 */build/
+bin/
 
 # Local configuration files
 local.properties

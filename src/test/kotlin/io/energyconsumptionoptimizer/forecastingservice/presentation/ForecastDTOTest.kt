@@ -1,12 +1,12 @@
-package io.energyconsumptionoptimizer.forecastingservice.presentation
+package io.energyconsumptionoptimizer.forecastservice.presentation
 
-import io.energyconsumptionoptimizer.forecastingservice.domain.ForecastedConsumption
-import io.energyconsumptionoptimizer.forecastingservice.domain.value.ConsumptionValue
-import io.energyconsumptionoptimizer.forecastingservice.domain.value.ForecastedDataPoint
-import io.energyconsumptionoptimizer.forecastingservice.domain.value.UtilityType
-import io.energyconsumptionoptimizer.forecastingservice.presentation.dto.UtilityTypeDto
-import io.energyconsumptionoptimizer.forecastingservice.presentation.dto.toDTO
-import io.energyconsumptionoptimizer.forecastingservice.presentation.dto.toListDTO
+import io.energyconsumptionoptimizer.forecastservice.domain.ForecastedConsumption
+import io.energyconsumptionoptimizer.forecastservice.domain.value.ConsumptionValue
+import io.energyconsumptionoptimizer.forecastservice.domain.value.ForecastedDataPoint
+import io.energyconsumptionoptimizer.forecastservice.domain.value.UtilityType
+import io.energyconsumptionoptimizer.forecastservice.presentation.dto.UtilityTypeDto
+import io.energyconsumptionoptimizer.forecastservice.presentation.dto.toDTO
+import io.energyconsumptionoptimizer.forecastservice.presentation.dto.toListDTO
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldContain
