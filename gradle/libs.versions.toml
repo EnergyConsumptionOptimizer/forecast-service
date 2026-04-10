@@ -10,7 +10,7 @@ kmongo = "5.6.0"
 smile = "4.4.2"
 dotenvKotlin= "6.5.1"
 kotlinxDatetime = "0.7.1-0.6.x-compat"
-jib = "3.4.7"
+jib = "3.5.3"
 
 [libraries]
 kotest-junit5-jvm = { module = "io.kotest:kotest-runner-junit5-jvm", version.ref = "kotest" }
