@@ -1,19 +1,29 @@
-# Stage 1: Build with Gradle
 FROM gradle:9.4.1-jdk21-jammy AS build
-WORKDIR /usr/src/app
+WORKDIR /app
 
 COPY build.gradle.kts settings.gradle.kts gradle.properties ./
 COPY gradle/ ./gradle/
-COPY . .
 
-RUN --mount=type=cache,target=/home/gradle/.gradle/caches \
-    gradle jar --parallel
+RUN git init && \
+    git config user.email "build@local" && \
+    git config user.name "build" && \
+    git commit --allow-empty -m "init" --no-gpg-sign
 
-# Stage 2: Runtime with slim JDK
-FROM eclipse-temurin:21-jre-jammy
+RUN --mount=type=cache,id=forecast-gradle-cache,target=/home/gradle/.gradle/caches \
+    gradle dependencies --no-daemon --quiet
+
+COPY src/ ./src/
+
+RUN --mount=type=cache,id=forecast-gradle-cache,target=/home/gradle/.gradle/caches \
+    gradle jar --no-daemon --parallel -x test -x check
+
+FROM eclipse-temurin:21-jre-jammy AS runtime
 WORKDIR /app
 
-COPY --from=build /usr/src/app/build/libs/app.jar app.jar
+RUN addgroup --system javauser && adduser --system --ingroup javauser javauser
+USER javauser
+
+COPY --from=build /app/build/libs/app.jar app.jar
 EXPOSE 3000
 
 ENTRYPOINT ["java", "-jar", "app.jar"]
