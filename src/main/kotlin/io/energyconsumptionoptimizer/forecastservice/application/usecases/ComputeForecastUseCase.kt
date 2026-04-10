@@ -12,6 +12,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.plus
 
 /**
  * Computes forecasts for utilities and persists the results.

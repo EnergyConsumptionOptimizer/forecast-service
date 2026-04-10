@@ -5,6 +5,7 @@ import io.energyconsumptionoptimizer.forecastservice.domain.port.HistoricalData
 import io.energyconsumptionoptimizer.forecastservice.domain.value.ConsumptionValue
 import io.energyconsumptionoptimizer.forecastservice.domain.value.ForecastedDataPoint
 import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.plus
 import smile.data.DataFrame
 import smile.data.formula.Formula
 import smile.regression.RandomForest
