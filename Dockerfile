@@ -17,7 +17,7 @@ COPY src/ ./src/
 RUN --mount=type=cache,id=forecast-gradle-cache,target=/home/gradle/.gradle/caches \
     gradle jar --no-daemon --parallel -x test -x check
 
-FROM eclipse-temurin:21-jre-jammy AS runtime
+FROM eclipse-temurin:26-jre-jammy AS runtime
 WORKDIR /app
 
 RUN addgroup --system javauser && adduser --system --ingroup javauser javauser
