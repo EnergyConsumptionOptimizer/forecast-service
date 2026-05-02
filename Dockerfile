@@ -1,4 +1,4 @@
-FROM gradle:9.4.1-jdk21-jammy AS build
+FROM gradle:9.5.0-jdk21-jammy AS build
 WORKDIR /app
 
 COPY build.gradle.kts settings.gradle.kts gradle.properties ./
