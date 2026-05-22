@@ -8,23 +8,23 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.todayIn
 
 @ConsistentCopyVisibility
-data class ForecastedDataPoint private constructor(
+data class HistoricalDataPoint private constructor(
     val date: LocalDate,
     val value: ConsumptionValue,
-) : Comparable<ForecastedDataPoint> {
-    override fun compareTo(other: ForecastedDataPoint): Int = this.date.compareTo(other.date)
+) : Comparable<HistoricalDataPoint> {
+    override fun compareTo(other: HistoricalDataPoint): Int = this.date.compareTo(other.date)
 
     companion object {
-        context(raise: Raise<DomainError.PastForecastDate>)
+        context(raise: Raise<DomainError.FutureHistoricalDate>)
         fun of(
             date: LocalDate,
             value: ConsumptionValue,
-        ): ForecastedDataPoint {
+        ): HistoricalDataPoint {
             val today =
                 kotlin.time.Clock.System
                     .todayIn(TimeZone.currentSystemDefault())
-            raise.ensure(date >= today) { DomainError.PastForecastDate(date) }
-            return ForecastedDataPoint(date, value)
+            raise.ensure(date <= today) { DomainError.FutureHistoricalDate(date) }
+            return HistoricalDataPoint(date, value)
         }
     }
 }
