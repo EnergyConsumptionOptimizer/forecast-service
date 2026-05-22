@@ -1,26 +1,16 @@
 package io.energyconsumptionoptimizer.forecastservice.presentation.dto
 
-import io.energyconsumptionoptimizer.forecastservice.domain.ForecastedConsumption
-import io.energyconsumptionoptimizer.forecastservice.domain.value.ForecastedDataPoint
+import io.energyconsumptionoptimizer.forecastservice.domain.value.UtilityType
 import kotlinx.datetime.LocalDate
+import kotlinx.datetime.daysUntil
 import kotlinx.serialization.Serializable
 import kotlin.time.Instant
+import io.energyconsumptionoptimizer.forecastservice.application.ports.dto.ForecastResponse as AppForecastResponse
 
-/**
- * API response representing a single forecast.
- *
- * @property id Forecast identifier as a string.
- * @property utilityType The reported utility type.
- * @property dataPoints Ordered list of daily predictions.
- * @property computedAt Timestamp when the forecast was computed.
- * @property startDate First date included in the forecast range.
- * @property endDate Last date included in the forecast range.
- * @property durationDays Duration of the forecast in days (inclusive).
- */
 @Serializable
 data class ForecastResponse(
     val id: String,
-    val utilityType: UtilityTypeDto,
+    val utilityType: UtilityType,
     val dataPoints: List<DataPointResponse>,
     val computedAt: Instant,
     val startDate: LocalDate,
@@ -28,72 +18,27 @@ data class ForecastResponse(
     val durationDays: Long,
 )
 
-/**
- * API representation of a single daily prediction.
- *
- * @property date The day the prediction refers to.
- * @property predictedConsumption Raw predicted consumption value for the day.
- */
 @Serializable
 data class DataPointResponse(
     val date: LocalDate,
     val predictedConsumption: Double,
 )
 
-/**
- * Container response for lists of forecasts.
- *
- * @property forecasts List of [ForecastResponse] items.
- */
 @Serializable
 data class ForecastListResponse(
     val forecasts: List<ForecastResponse>,
-) {
-    /** Number of forecasts included in the response. */
-    val count: Int get() = forecasts.size
-}
+)
 
-/** Supported utility types exposed by the HTTP API. */
-@Serializable
-enum class UtilityTypeDto {
-    ELECTRICITY,
-    GAS,
-    WATER,
-}
-
-/**
- * Convert a domain [ForecastedConsumption] into an API [ForecastResponse].
- *
- * @receiver Domain forecast to convert.
- * @return Serialized [ForecastResponse] suitable for HTTP responses.
- */
-fun ForecastedConsumption.toDTO(): ForecastResponse =
-    ForecastResponse(
-        id = id.value.toString(),
-        utilityType = UtilityTypeDto.valueOf(utilityType.name),
-        dataPoints = forecastedDataPoints.map { it.toDTO() },
+fun AppForecastResponse.toPresentationDTO(): ForecastResponse {
+    val first = dataPoints.first().date
+    val last = dataPoints.last().date
+    return ForecastResponse(
+        id = utilityType.name,
+        utilityType = utilityType,
+        dataPoints = dataPoints.map { DataPointResponse(it.date, it.value) },
         computedAt = computedAt,
-        startDate = startDate,
-        endDate = endDate,
-        durationDays = durationDays,
+        startDate = first,
+        endDate = last,
+        durationDays = first.daysUntil(last).toLong() + 1,
     )
-
-/**
- * Convert a domain [ForecastedDataPoint] into a [DataPointResponse].
- *
- * @receiver Domain data point to convert.
- * @return API-friendly [DataPointResponse].
- */
-fun ForecastedDataPoint.toDTO(): DataPointResponse =
-    DataPointResponse(
-        date = date,
-        predictedConsumption = predictedValue.amount,
-    )
-
-/**
- * Convert a list of domain forecasts to a [ForecastListResponse].
- *
- * @receiver List of domain [ForecastedConsumption].
- * @return [ForecastListResponse] wrapping the converted items.
- */
-fun List<ForecastedConsumption>.toListDTO(): ForecastListResponse = ForecastListResponse(map { it.toDTO() })
+}
