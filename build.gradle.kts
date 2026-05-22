@@ -7,7 +7,6 @@ plugins {
     alias(libs.plugins.kotlin.qa)
     alias(libs.plugins.kotlin.serialization)
     application
-    alias(libs.plugins.jib)
 }
 
 repositories {
@@ -36,14 +35,21 @@ dependencies {
     testImplementation(libs.ktor.client.resources)
     testImplementation(libs.ktor.client.mock)
     testImplementation(libs.mockk)
+    testImplementation(libs.flapdoodle.embed.mongo)
+    testImplementation(libs.kotest.assertions.arrow)
     implementation(libs.bundles.ktor)
     implementation(libs.logback.classic)
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.kotlinx.datetime)
     implementation(libs.kmongo.coroutine.serialization)
-    implementation(libs.dotenv.kotlin)
     implementation(libs.smile.core)
+    implementation(libs.arrow.core)
+    implementation(libs.opentelemetry.api)
+    implementation(libs.opentelemetry.sdk.autoconfigure)
+    implementation(libs.opentelemetry.exporter.otlp)
+    implementation(libs.opentelemetry.logback.appender)
+    implementation(libs.opentelemetry.ktor)
 }
 
 gitSemVer {
@@ -54,6 +60,12 @@ gitSemVer {
 dokka {
     dokkaPublications.html {
         outputDirectory.set(layout.buildDirectory.dir("$rootDir/docs"))
+    }
+}
+
+kotlin {
+    compilerOptions {
+        freeCompilerArgs.add("-Xcontext-parameters")
     }
 }
 
@@ -68,36 +80,6 @@ tasks.jar {
             .map { if (it.isDirectory) it else zipTree(it) },
     )
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-}
-
-jib {
-    from {
-        image = "eclipse-temurin:21-jre-jammy"
-        if (System.getenv("CI") == "true") {
-            platforms {
-                platform {
-                    architecture = "amd64"
-                    os = "linux"
-                }
-                platform {
-                    architecture = "arm64"
-                    os = "linux"
-                }
-            }
-        }
-    }
-    to {
-        image = "ghcr.io/energyconsumptionoptimizer/${project.name}"
-        if (System.getenv("CI") == "true") {
-            tags = setOf("latest")
-        }
-    }
-    container {
-        mainClass = application.mainClass.get()
-        ports = listOf("3000")
-        user = "root"
-        environment = mapOf("KTOR_DEVELOPMENT" to "true")
-    }
 }
 
 detekt {

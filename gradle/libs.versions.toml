@@ -8,9 +8,11 @@ coroutines = "1.11.0"
 logback = "1.5.32"
 kmongo = "5.6.0"
 smile = "4.4.2"
-dotenvKotlin= "6.5.1"
 kotlinxDatetime = "0.8.0-0.6.x-compat"
-jib = "3.5.3"
+arrow = "2.2.2"
+flapdoodle-mongo = "4.7.0"
+opentelemetry = "1.49.0"
+opentelemetry-instrumentation = "2.15.0-alpha"
 
 [libraries]
 kotest-junit5-jvm = { module = "io.kotest:kotest-runner-junit5-jvm", version.ref = "kotest" }
@@ -34,6 +36,7 @@ ktor-serialization-kotlinx-json-jvm = { module = "io.ktor:ktor-serialization-kot
 ktor-server-cors = { module = "io.ktor:ktor-server-cors", version.ref = "ktor" }
 ktor-server-resources = { module = "io.ktor:ktor-server-resources", version.ref = "ktor" }
 ktor-server-auth = { module = "io.ktor:ktor-server-auth", version.ref = "ktor" }
+ktor-server-call-logging = { module = "io.ktor:ktor-server-call-logging-jvm", version.ref = "ktor" }
 
 smile-core = { group = "com.github.haifengl", name = "smile-core", version.ref = "smile" }
 
@@ -43,10 +46,20 @@ kmongo-coroutine-serialization = { module = "org.litote.kmongo:kmongo-coroutine-
 
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
-dotenv-kotlin = { group = "io.github.cdimascio", name = "dotenv-kotlin", version.ref = "dotenvKotlin" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
 
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
+
+arrow-core = { module = "io.arrow-kt:arrow-core", version.ref = "arrow" }
+kotest-assertions-arrow = { module = "io.kotest:kotest-assertions-arrow", version.ref = "kotest" }
+
+flapdoodle-embed-mongo = { module = "de.flapdoodle.embed:de.flapdoodle.embed.mongo", version.ref = "flapdoodle-mongo" }
+
+opentelemetry-api = { module = "io.opentelemetry:opentelemetry-api", version.ref = "opentelemetry" }
+opentelemetry-sdk-autoconfigure = { module = "io.opentelemetry:opentelemetry-sdk-extension-autoconfigure", version.ref = "opentelemetry" }
+opentelemetry-exporter-otlp = { module = "io.opentelemetry:opentelemetry-exporter-otlp", version.ref = "opentelemetry" }
+opentelemetry-logback-appender = { module = "io.opentelemetry.instrumentation:opentelemetry-logback-appender-1.0", version.ref = "opentelemetry-instrumentation" }
+opentelemetry-ktor = { module = "io.opentelemetry.instrumentation:opentelemetry-ktor-3.0", version.ref = "opentelemetry-instrumentation" }
 
 [bundles]
 kotlin-testing = [ "kotest-junit5-jvm", "kotest-assertions-core-jvm" ]
@@ -62,7 +75,8 @@ ktor = [
     "ktor-client-core",
     "ktor-client-cio",
     "ktor-client-content-negotiation",
-    "ktor-serialization-kotlinx-json-jvm"
+    "ktor-serialization-kotlinx-json-jvm",
+    "ktor-server-call-logging"
 ]
 
 [plugins]
@@ -71,4 +85,3 @@ gitSemVer = "org.danilopianini.git-sensitive-semantic-versioning:7.0.20"
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-qa = "org.danilopianini.gradle-kotlin-qa:1.6.2"
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
-jib = { id = "com.google.cloud.tools.jib", version.ref = "jib" }
