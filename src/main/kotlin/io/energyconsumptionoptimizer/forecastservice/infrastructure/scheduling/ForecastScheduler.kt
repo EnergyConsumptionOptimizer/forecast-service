@@ -18,6 +18,7 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
 import kotlin.time.Clock
+import kotlin.time.Duration.Companion.milliseconds
 
 class ForecastScheduler(
     private val computeForecastService: ComputeForecastService,
@@ -33,13 +34,13 @@ class ForecastScheduler(
     fun start() {
         if (job?.isActive == true) return
         firstRun = true
-        logger.info("Forecast scheduler started, will execute daily at {:02d}:{:02d}", schedulerHour, schedulerMinute)
+        logger.info("Forecast scheduler started, will execute daily at {}:{}", schedulerHour, schedulerMinute)
         job =
             scope.launch {
                 while (isActive) {
                     val delayMillis = millisUntilNextRun()
                     if (delayMillis > 0) {
-                        delay(delayMillis)
+                        delay(delayMillis.milliseconds)
                     }
                     try {
                         val result = either { computeForecastService.computeAll() }

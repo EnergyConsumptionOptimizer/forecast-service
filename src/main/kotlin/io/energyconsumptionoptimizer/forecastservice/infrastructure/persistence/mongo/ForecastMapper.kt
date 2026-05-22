@@ -28,7 +28,7 @@ object ForecastMapper {
         )
 
     fun toDomain(doc: ForecastDocument): Forecast? =
-        either<DomainError, Forecast> {
+        either {
             val utilityType = parseUtilityType(doc.utilityType)
             val dataPoints =
                 doc.dataPoints.map { point ->
