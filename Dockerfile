@@ -17,6 +17,27 @@ COPY src/ ./src/
 RUN --mount=type=cache,id=forecast-gradle-cache,target=/home/gradle/.gradle/caches \
     gradle jar --no-daemon --parallel -x test -x check
 
+FROM gradle:9.5.1-jdk21-jammy AS dev
+WORKDIR /app
+
+COPY build.gradle.kts settings.gradle.kts gradle.properties ./
+COPY gradle/ ./gradle/
+
+RUN git init && \
+    git config user.email "dev@local" && \
+    git config user.name "dev" && \
+    git commit --allow-empty -m "init" --no-gpg-sign
+
+RUN --mount=type=cache,id=forecast-gradle-cache,target=/home/gradle/.gradle/caches \
+    gradle dependencies --no-daemon --quiet
+
+COPY src/ ./src/
+
+RUN --mount=type=cache,id=forecast-gradle-cache,target=/home/gradle/.gradle/caches \
+    gradle jar --no-daemon --parallel -x test -x check
+
+EXPOSE 3000
+
 FROM eclipse-temurin:21-jre-jammy AS runtime
 WORKDIR /app
 
