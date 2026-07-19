@@ -25,7 +25,7 @@ application {
 
 buildscript {
     dependencies {
-        classpath("io.github.andreabrighi:conventional-commit-strategy-for-git-sensitive-semantic-versioning-gradle-plugin:2.0.19")
+        classpath("io.github.andreabrighi:conventional-commit-strategy-for-git-sensitive-semantic-versioning-gradle-plugin:2.0.22")
     }
 }
 
