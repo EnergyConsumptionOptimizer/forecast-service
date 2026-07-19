@@ -10,7 +10,7 @@ kmongo = "5.6.0"
 smile = "4.4.2"
 kotlinxDatetime = "0.8.0-0.6.x-compat"
 arrow = "2.2.3"
-flapdoodle-mongo = "4.21.0"
+flapdoodle-mongo = "4.22.0"
 opentelemetry = "1.49.0"
 opentelemetry-instrumentation = "2.15.0-alpha"
 
