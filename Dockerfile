@@ -38,7 +38,7 @@ RUN --mount=type=cache,id=forecast-gradle-cache,target=/home/gradle/.gradle/cach
 
 EXPOSE 3000
 
-FROM eclipse-temurin:21-jre-jammy AS runtime
+FROM eclipse-temurin:22-jre-jammy AS runtime
 WORKDIR /app
 
 RUN addgroup --system javauser && adduser --system --ingroup javauser javauser
