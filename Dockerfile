@@ -1,4 +1,4 @@
-FROM gradle:9.5.1-jdk21-jammy AS build
+FROM gradle:9.6.1-jdk21-jammy AS build
 WORKDIR /app
 
 COPY build.gradle.kts settings.gradle.kts gradle.properties ./
@@ -17,7 +17,7 @@ COPY src/ ./src/
 RUN --mount=type=cache,id=forecast-gradle-cache,target=/home/gradle/.gradle/caches \
     gradle jar --no-daemon --parallel -x test -x check
 
-FROM gradle:9.5.1-jdk21-jammy AS dev
+FROM gradle:9.6.1-jdk21-jammy AS dev
 WORKDIR /app
 
 COPY build.gradle.kts settings.gradle.kts gradle.properties ./
